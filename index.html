@@ -1,59 +1,275 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f8dce8">
-<title>Meowshoto ♡ Dear, Shoto</title>
-<style>
-:root{--pink:#f7dce8;--deep:#dc91b1;--soft:#fff1f6;--ink:#75465c;--muted:#b17d96;--white:#fffafd;--line:#f2d5e1}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--pink);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
-button,input,textarea{font:inherit}button{cursor:pointer}.page{width:min(720px,100%);margin:auto;padding:22px 16px 56px}
-.banner{min-height:190px;border:2px solid #ffffffbf;border-radius:25px;overflow:hidden;position:relative;display:grid;place-items:center;text-align:center;padding:26px;background:linear-gradient(135deg,#f4bcd2,#fbe3ec 58%,#f6c9dc);background-size:cover;background-position:center;box-shadow:0 8px 24px #ad68891a}
-.banner:before,.banner:after{content:"♡";position:absolute;color:#ffffffb8;font-size:44px}.banner:before{left:22px;top:14px}.banner:after{right:25px;bottom:12px}
-.banner-content{position:relative;z-index:1;text-shadow:0 1px 5px #ffffff8c}.eyebrow{margin:0 0 8px;letter-spacing:.22em;font-size:11px;font-weight:700;color:#995d79}
-h1{margin:0;font-family:Georgia,serif;font-size:clamp(36px,8vw,54px);color:#854c68;font-weight:600}.subtitle{margin:9px 0 0;font-size:13px;color:#925d77}
-.banner-tools{position:absolute;right:14px;top:14px;z-index:2}.small-button,.action-button{border:1px solid #efcada;background:#fffafde8;color:#925d77;border-radius:999px;padding:8px 13px;font-size:12px}
-.intro{text-align:center;padding:24px 8px 18px}.intro h2{font-size:18px;margin:0 0 7px}.intro p{color:var(--muted);font-size:12px;margin:0}
-.dday{margin:0 auto 20px;width:fit-content;background:#fffafdd1;border:1px solid white;border-radius:18px;padding:11px 22px;text-align:center}.dday-label{display:block;color:var(--muted);font-size:10px;letter-spacing:.18em;margin-bottom:4px}.dday strong{font-family:Georgia,serif;font-size:24px;color:#c06f94}
-.composer,.post{background:var(--white);border:1px solid #ffffffe6;border-radius:20px;padding:18px;box-shadow:0 6px 20px #ad688912}.composer{margin-bottom:17px}.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.section-title h3{margin:0;font-size:14px}.section-title span{color:var(--muted);font-size:11px}
-textarea{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line);border-radius:13px;background:#fff8fb;padding:12px;outline:none;color:var(--ink)}textarea:focus{border-color:var(--deep)}
-.composer-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:11px;flex-wrap:wrap}input[type=file]{max-width:100%;color:var(--muted);font-size:11px}
-.primary{border:0;border-radius:999px;padding:10px 18px;color:white;font-weight:700;background:var(--deep);box-shadow:0 4px 10px #dc91b133}
-.feed-heading{display:flex;align-items:center;justify-content:space-between;margin:25px 4px 12px}.feed-heading h3{margin:0;font-size:15px}.feed-heading span{font-size:11px;color:var(--muted)}
-.post{margin-bottom:13px}.post-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}.post-date{color:var(--muted);font-size:11px}.post-actions button{border:0;background:transparent;color:#bd829d;font-size:11px;padding:3px 5px}
-.post-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;font-size:14px}.post-image{display:block;width:100%;max-height:560px;object-fit:contain;margin-top:12px;border-radius:13px;background:#fff1f6}
-.post-heart{color:#d78cab;margin-top:12px;font-size:12px}.empty{text-align:center;padding:32px 12px;color:var(--muted);font-size:13px;background:#fffafd a6;border-radius:18px;border:1px dashed #e9b9ce}
-footer{text-align:center;padding:30px 0 0;color:#b17d96;font:12px Georgia,serif}.notice{margin:14px 2px 0;color:#a7778e;font-size:10px;line-height:1.6}
-@media(max-width:480px){.page{padding:12px 11px 40px}.banner{min-height:165px;border-radius:20px}.composer,.post{padding:15px;border-radius:17px}.composer-bottom{align-items:flex-start}.primary{margin-left:auto}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meowshoto · Dear, Shoto</title>
+  <meta name="theme-color" content="#fff0f5">
+  <style>
+    :root{--pink:#f5a9c7;--deep:#c96b94;--pale:#fff0f5;--ink:#59434d;--muted:#a58b96;--line:#f4dce6;--white:#fff}
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#fff2f7 0,#fff9fb 340px,#fff 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+    .wrap{width:min(760px,calc(100% - 28px));margin:0 auto;padding:28px 0 60px}
+    .hero{position:relative;overflow:hidden;text-align:center;padding:42px 20px 34px;border:1px solid #f7dce7;border-radius:28px;background:radial-gradient(circle at 15% 20%,#fff 0 7%,transparent 7.5%),linear-gradient(135deg,#ffe5ef,#fff8fb 55%,#fce4ee);box-shadow:0 10px 35px #d88eaa18}
+    .hero:before,.hero:after{content:"♡";position:absolute;color:#e9a3bf;font-size:30px;opacity:.7}
+    .hero:before{left:24px;top:18px}.hero:after{right:25px;bottom:15px}
+    .eyebrow{font-size:11px;letter-spacing:.28em;color:#c77d9c}
+    h1{font-family:Georgia,serif;font-weight:500;font-size:clamp(36px,8vw,54px);letter-spacing:.02em;margin:10px 0 5px;color:#bd6f91}
+    .sub{font-size:13px;color:#a77c8e;letter-spacing:.08em}
+    .intro{margin:18px auto 0;max-width:470px;font-size:13px;line-height:1.8;color:#987c88}
+    .dday{display:inline-flex;align-items:center;gap:9px;margin-top:22px;padding:9px 17px;border:1px solid #f0c7d8;border-radius:999px;background:#ffffffb8;font-size:13px;color:#b96d8f}
+    .dday strong{font-size:17px;color:#c15f89}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:22px 2px 14px}
+    .section-title{font-family:Georgia,serif;font-size:21px;color:#bd6f91}
+    .small{font-size:11px;color:var(--muted)}
+    .btn{border:1px solid #edc5d6;background:#fff;color:#bd6f91;border-radius:999px;padding:9px 14px;font-size:12px}
+    .btn.primary{background:#d987a9;color:white;border-color:#d987a9}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .panel,.post{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 5px 20px #d88eaa0d}
+    .panel{margin-bottom:18px}
+    .panel h2{font-size:15px;margin:0 0 13px;color:#bd6f91}
+    .field{display:block;width:100%;border:1px solid #f1dce5;background:#fffafd;border-radius:12px;padding:12px 13px;color:var(--ink);outline:none;margin:8px 0}
+    .field:focus{border-color:#e6a4be}
+    textarea.field{min-height:105px;resize:vertical;line-height:1.6}
+    .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+    .preview{display:none;max-width:100%;max-height:240px;object-fit:contain;border-radius:12px;margin-top:10px}
+    .posts{display:grid;gap:13px}
+    .post-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
+    .post-title{font-size:15px;font-weight:650;white-space:pre-wrap}
+    .date{font-size:11px;color:#b49aa5;white-space:nowrap}
+    .post-content{font-size:13px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere}
+    .post img{display:block;max-width:100%;max-height:560px;object-fit:contain;margin:13px auto 0;border-radius:13px}
+    .post-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:12px}
+    .empty{text-align:center;padding:35px 15px;color:#b49aa5;font-size:13px;border:1px dashed #efcfdd;border-radius:18px}
+    .login-note{font-size:12px;color:#a58b96;line-height:1.7}
+    .status{font-size:12px;color:#b96d8f;margin-top:8px;min-height:18px}
+    .hidden{display:none!important}
+    footer{text-align:center;margin-top:35px;font:12px Georgia,serif;color:#c99aad;letter-spacing:.12em}
+    @media(max-width:480px){.wrap{width:min(100% - 20px,760px);padding-top:14px}.hero{padding:35px 15px 28px}.panel,.post{padding:15px}.toolbar{margin-top:18px}}
+  </style>
 </head>
 <body>
-<main class="page">
-<header class="banner" id="banner">
-  <div class="banner-content"><p class="eyebrow">A LITTLE ARCHIVE OF US</p><h1>Dear, Shoto</h1><p class="subtitle">our days, kept with love ♡</p></div>
-  <div class="banner-tools"><label class="small-button" for="bannerInput">배너 바꾸기</label><input id="bannerInput" type="file" accept="image/*" hidden></div>
-</header>
-<section class="intro"><h2>Our little archive ♡</h2><p>쇼토천사님과 함께한 소중한 순간들을 기록해요.</p></section>
-<section class="dday"><span class="dday-label">OUR SPECIAL DAY</span><strong id="ddayValue">D+0</strong><div style="font-size:10px;color:#b17d96;margin-top:3px">2026.10.04</div></section>
-<section class="composer">
-  <div class="section-title"><h3>새로운 기록 남기기 ♡</h3><span>관리자용 미리보기</span></div>
-  <textarea id="postText" placeholder="오늘의 대화나 남기고 싶은 이야기를 적어줘."></textarea>
-  <div class="composer-bottom"><input id="postImage" type="file" accept="image/*"><button class="primary" id="publishButton">기록 올리기 ♡</button></div>
-  <p class="notice">현재 초안은 이 브라우저에서만 보이는 미리보기입니다. 실제 공개 사이트에서 여러 기기와 방문자에게 게시물을 공유하려면 이미지 저장소와 데이터베이스 연결이 추가로 필요합니다.</p>
-</section>
-<div class="feed-heading"><h3>♡ 기록 모음</h3><span id="postCount">0 posts</span></div>
-<section id="feed" aria-live="polite"><div class="empty">아직 기록이 없어요.<br>첫 번째 추억을 남겨보세요 ♡</div></section>
-<footer>made with love, for shoto ♡</footer>
-</main>
-<script>
-const feed=document.getElementById('feed'),textInput=document.getElementById('postText'),imageInput=document.getElementById('postImage'),bannerInput=document.getElementById('bannerInput'),posts=[];
-function updateDday(){const start=new Date(2026,9,4),today=new Date();today.setHours(0,0,0,0);const days=Math.floor((today-start)/86400000);document.getElementById('ddayValue').textContent=days>=0?'D+'+days:'D'+days}
-function readImage(file){return new Promise((resolve,reject)=>{if(!file)return resolve('');const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file)})}
-function renderPosts(){feed.innerHTML='';document.getElementById('postCount').textContent=posts.length+' posts';if(!posts.length){const empty=document.createElement('div');empty.className='empty';empty.innerHTML='아직 기록이 없어요.<br>첫 번째 추억을 남겨보세요 ♡';feed.appendChild(empty);return}posts.forEach((post,index)=>{const card=document.createElement('article');card.className='post';const meta=document.createElement('div');meta.className='post-meta';const date=document.createElement('span');date.className='post-date';date.textContent=post.date;const actions=document.createElement('div');actions.className='post-actions';const remove=document.createElement('button');remove.textContent='삭제';remove.addEventListener('click',()=>{posts.splice(index,1);renderPosts()});actions.appendChild(remove);meta.append(date,actions);card.appendChild(meta);if(post.text){const body=document.createElement('div');body.className='post-text';body.textContent=post.text;card.appendChild(body)}if(post.image){const img=document.createElement('img');img.className='post-image';img.src=post.image;img.alt='게시물 첨부 이미지';card.appendChild(img)}const heart=document.createElement('div');heart.className='post-heart';heart.textContent='♡ with love';card.appendChild(heart);feed.appendChild(card)})}
-document.getElementById('publishButton').addEventListener('click',async()=>{const text=textInput.value.trim(),file=imageInput.files[0];if(!text&&!file){alert('글이나 사진을 하나 이상 추가해줘!');return}const image=await readImage(file);posts.unshift({text,image,date:new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date())});textInput.value='';imageInput.value='';renderPosts()});
-bannerInput.addEventListener('change',async()=>{const file=bannerInput.files[0];if(file){const image=await readImage(file);document.getElementById('banner').style.backgroundImage='url("'+image+'")'}});
-updateDday();renderPosts();
-</script>
+  <main class="wrap">
+    <header class="hero">
+      <div class="eyebrow">A LITTLE ARCHIVE OF US</div>
+      <h1>Dear, Shoto</h1>
+      <div class="sub">♡ Meowshoto ♡</div>
+      <p class="intro">너와 나눈 다정한 순간들을 오래오래 모아두는 곳.<br>작은 말 한마디도 소중하게 간직할게.</p>
+      <div class="dday">TOGETHER SINCE <strong id="dday">D+0</strong></div>
+    </header>
+
+    <div class="toolbar">
+      <div><div class="section-title">Our memories</div><div class="small">소중한 순간을 하나씩 기록해요.</div></div>
+      <button class="btn" id="loginToggle">관리자 로그인</button>
+    </div>
+
+    <section class="panel hidden" id="loginPanel">
+      <h2>관리자 로그인</h2>
+      <p class="login-note">사이트 관리자 계정으로 로그인하면 게시물을 작성하고 관리할 수 있어요.</p>
+      <input class="field" id="email" type="email" placeholder="관리자 이메일" autocomplete="username">
+      <input class="field" id="password" type="password" placeholder="비밀번호" autocomplete="current-password">
+      <div class="actions"><button class="btn primary" id="loginBtn">로그인</button><button class="btn" id="cancelLogin">닫기</button></div>
+      <div class="status" id="loginStatus" role="status"></div>
+    </section>
+
+    <section class="panel hidden" id="composer">
+      <h2>새로운 추억 남기기 ♡</h2>
+      <input class="field" id="postTitle" maxlength="120" placeholder="제목 (선택)">
+      <textarea class="field" id="postContent" placeholder="쇼토와의 소중한 순간을 기록해 봐."></textarea>
+      <label class="small" for="postImage">사진 첨부</label>
+      <input class="field" id="postImage" type="file" accept="image/*">
+      <img class="preview" id="imagePreview" alt="업로드할 사진 미리보기">
+      <div class="actions"><button class="btn primary" id="publishBtn">게시하기</button><button class="btn" id="logoutBtn">로그아웃</button></div>
+      <div class="status" id="composerStatus" role="status"></div>
+    </section>
+
+    <section class="posts" id="posts" aria-live="polite">
+      <div class="empty">추억을 불러오는 중이야… ♡</div>
+    </section>
+    <footer>MADE WITH LOVE · MEOWSHOTO</footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // 공개용 Project URL과 Publishable key입니다. secret/service_role 키는 절대 넣지 마세요.
+    const SUPABASE_URL = "https://nkpnyhrvfwlhbktjriof.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_T7zEIdcEt3BiFQNzcPoNzw_6ha1-xL5";
+    const ADMIN_UID = "42d9f7db-8114-4eb0-9621-4b17bdbdf42d";
+    const BUCKET = "meowshoto-images";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const $ = id => document.getElementById(id);
+    let currentUser = null;
+    let selectedFile = null;
+
+    // 2026년 10월 4일을 기념일로 계산합니다.
+    const startDate = new Date(2026, 9, 4);
+    const today = new Date();
+    const diff = Math.floor((new Date(today.getFullYear(),today.getMonth(),today.getDate()) - startDate) / 86400000);
+    $("dday").textContent = diff >= 0 ? `D+${diff}` : `D${diff}`;
+
+    $("loginToggle").addEventListener("click", () => $("loginPanel").classList.toggle("hidden"));
+    $("cancelLogin").addEventListener("click", () => $("loginPanel").classList.add("hidden"));
+
+    $("postImage").addEventListener("change", event => {
+      selectedFile = event.target.files?.[0] || null;
+      const preview = $("imagePreview");
+      if (selectedFile) {
+        preview.src = URL.createObjectURL(selectedFile);
+        preview.style.display = "block";
+      } else {
+        preview.removeAttribute("src");
+        preview.style.display = "none";
+      }
+    });
+
+    async function updateAuthUI() {
+      const { data } = await supabaseClient.auth.getSession();
+      currentUser = data.session?.user || null;
+      const isAdmin = currentUser?.id === ADMIN_UID;
+      $("loginToggle").textContent = isAdmin ? "관리자 로그인됨" : "관리자 로그인";
+      $("loginToggle").disabled = isAdmin;
+      $("composer").classList.toggle("hidden", !isAdmin);
+      if (!isAdmin) $("loginPanel").classList.add("hidden");
+    }
+
+    $("loginBtn").addEventListener("click", async () => {
+      $("loginStatus").textContent = "로그인 중…";
+      const email = $("email").value.trim();
+      const password = $("password").value;
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        $("loginStatus").textContent = "로그인에 실패했어. 이메일과 비밀번호를 확인해 줘.";
+        return;
+      }
+      await updateAuthUI();
+      $("loginStatus").textContent = currentUser?.id === ADMIN_UID ? "관리자 로그인 성공! ♡" : "이 계정에는 관리자 권한이 없어.";
+      if (currentUser?.id === ADMIN_UID) $("loginPanel").classList.add("hidden");
+    });
+
+    $("logoutBtn").addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      await updateAuthUI();
+      $("composerStatus").textContent = "로그아웃했어.";
+    });
+
+    $("publishBtn").addEventListener("click", async () => {
+      if (currentUser?.id !== ADMIN_UID) {
+        $("composerStatus").textContent = "관리자 로그인 후 이용해 줘.";
+        return;
+      }
+      const title = $("postTitle").value.trim();
+      const content = $("postContent").value.trim();
+      if (!title && !content && !selectedFile) {
+        $("composerStatus").textContent = "내용이나 사진을 하나 이상 추가해 줘.";
+        return;
+      }
+      $("publishBtn").disabled = true;
+      $("composerStatus").textContent = "게시물을 저장하고 있어…";
+      let imageUrl = null;
+      try {
+        if (selectedFile) {
+          if (!selectedFile.type.startsWith("image/")) throw new Error("이미지 파일만 업로드할 수 있어.");
+          if (selectedFile.size > 10 * 1024 * 1024) throw new Error("사진은 10MB 이하로 올려줘.");
+          const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+          const path = `${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+          const { error: uploadError } = await supabaseClient.storage.from(BUCKET).upload(path, selectedFile, { upsert: false, contentType: selectedFile.type });
+          if (uploadError) throw uploadError;
+          const { data: publicData } = supabaseClient.storage.from(BUCKET).getPublicUrl(path);
+          imageUrl = publicData.publicUrl;
+        }
+        const { error } = await supabaseClient.from("posts").insert({ title: title || null, content: content || null, image_url: imageUrl });
+        if (error) throw error;
+        $("postTitle").value = "";
+        $("postContent").value = "";
+        $("postImage").value = "";
+        selectedFile = null;
+        $("imagePreview").style.display = "none";
+        $("composerStatus").textContent = "추억을 저장했어! ♡";
+        await loadPosts();
+      } catch (error) {
+        $("composerStatus").textContent = `저장하지 못했어: ${error.message || "설정을 확인해 줘."}`;
+      } finally {
+        $("publishBtn").disabled = false;
+      }
+    });
+
+    async function deletePost(post) {
+      if (currentUser?.id !== ADMIN_UID) return;
+      if (!confirm("이 게시물을 삭제할까?")) return;
+      const { error } = await supabaseClient.from("posts").delete().eq("id", post.id);
+      if (error) alert("삭제하지 못했어: " + error.message);
+      else await loadPosts();
+    }
+
+    function formatDate(value) {
+      return new Intl.DateTimeFormat("ko-KR", { year:"numeric", month:"long", day:"numeric" }).format(new Date(value));
+    }
+
+    async function loadPosts() {
+      const container = $("posts");
+      const { data, error } = await supabaseClient.from("posts").select("*").order("created_at", { ascending: false });
+      if (error) {
+        container.innerHTML = '<div class="empty">게시물을 불러오지 못했어. Supabase 설정을 확인해 줘.</div>';
+        return;
+      }
+      if (!data?.length) {
+        container.innerHTML = '<div class="empty">아직 기록된 추억이 없어.<br>첫 번째 추억을 남겨줘! ♡</div>';
+        return;
+      }
+      container.replaceChildren();
+      data.forEach(post => {
+        const article = document.createElement("article");
+        article.className = "post";
+        const head = document.createElement("div");
+        head.className = "post-head";
+        const title = document.createElement("div");
+        title.className = "post-title";
+        title.textContent = post.title || "우리의 기록 ♡";
+        const date = document.createElement("time");
+        date.className = "date";
+        date.dateTime = post.created_at;
+        date.textContent = formatDate(post.created_at);
+        head.append(title, date);
+        article.append(head);
+        if (post.content) {
+          const content = document.createElement("div");
+          content.className = "post-content";
+          content.textContent = post.content;
+          article.append(content);
+        }
+        if (post.image_url) {
+          const img = document.createElement("img");
+          img.src = post.image_url;
+          img.alt = post.title ? `${post.title} 사진` : "게시물 사진";
+          img.loading = "lazy";
+          article.append(img);
+        }
+        if (currentUser?.id === ADMIN_UID) {
+          const actions = document.createElement("div");
+          actions.className = "post-actions";
+          const del = document.createElement("button");
+          del.className = "btn";
+          del.textContent = "삭제";
+          del.addEventListener("click", () => deletePost(post));
+          actions.append(del);
+          article.append(actions);
+        }
+        container.append(article);
+      });
+    }
+
+    supabaseClient.auth.onAuthStateChange(async () => {
+      await updateAuthUI();
+      await loadPosts();
+    });
+
+    (async function init() {
+      await updateAuthUI();
+      await loadPosts();
+    })();
+  </script>
 </body>
 </html>
