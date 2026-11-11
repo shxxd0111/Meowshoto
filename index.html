@@ -41,7 +41,7 @@
     .date{font-size:11px;color:#b49aa5;white-space:nowrap}
     .post-content{font-size:13px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere}
     .post img{display:block;max-width:100%;max-height:560px;object-fit:contain;margin:13px auto 0;border-radius:13px}
-    .post-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:12px}
+    .post-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:12px}.edit-form{margin-top:14px;padding:14px;border:1px dashed #edc5d6;border-radius:14px;background:#fffafd}.edit-form .field{margin:8px 0}.edit-help{font-size:11px;color:#a58b96;line-height:1.6}
     .empty{text-align:center;padding:35px 15px;color:#b49aa5;font-size:13px;border:1px dashed #efcfdd;border-radius:18px}
     .login-note{font-size:12px;color:#a58b96;line-height:1.7}
     .status{font-size:12px;color:#b96d8f;margin-top:8px;min-height:18px}
@@ -56,7 +56,7 @@
       <div class="eyebrow">엔진 자랑타래에 오신 걸 환영합니다!</div>
       <h1>轟 焦凍</h1>
       <div class="sub">♡ 쇼토천사님과 ♡</div>
-      <p class="intro">쇼토천사님 자랑타래 사이트.<br>俺の力だ。.</p>
+      <p class="intro">쇼토천사님 자랑타래 사이트<br>俺の力だ。</p>
       <div class="dday">TOGETHER SINCE <strong id="dday">D+0</strong></div>
     </header>
 
@@ -196,6 +196,144 @@
       }
     });
 
+    async function editPost(post, article) {
+      if (currentUser?.id !== ADMIN_UID) return;
+
+      // 같은 게시물에 편집창이 이미 열려 있으면 중복으로 만들지 않습니다.
+      if (article.querySelector(".edit-form")) return;
+
+      const form = document.createElement("form");
+      form.className = "edit-form";
+
+      const heading = document.createElement("div");
+      heading.className = "post-title";
+      heading.textContent = "게시물 수정 ♡";
+
+      const titleInput = document.createElement("input");
+      titleInput.className = "field";
+      titleInput.maxLength = 120;
+      titleInput.placeholder = "제목 (선택)";
+      titleInput.value = post.title || "";
+
+      const contentInput = document.createElement("textarea");
+      contentInput.className = "field";
+      contentInput.placeholder = "내용을 입력해 줘.";
+      contentInput.value = post.content || "";
+
+      const help = document.createElement("div");
+      help.className = "edit-help";
+      help.textContent = post.image_url
+        ? "새 사진을 선택하지 않으면 기존 사진이 그대로 유지돼."
+        : "원하면 사진을 새로 첨부할 수 있어.";
+
+      const imageInput = document.createElement("input");
+      imageInput.className = "field";
+      imageInput.type = "file";
+      imageInput.accept = "image/*";
+
+      const preview = document.createElement("img");
+      preview.className = "preview";
+      preview.alt = "새 사진 미리보기";
+
+      if (post.image_url) {
+        const currentPhoto = document.createElement("div");
+        currentPhoto.className = "edit-help";
+        currentPhoto.textContent = "현재 등록된 사진";
+        const currentImg = document.createElement("img");
+        currentImg.src = post.image_url;
+        currentImg.alt = "현재 게시물 사진";
+        currentImg.style.cssText = "display:block;max-width:100%;max-height:180px;object-fit:contain;border-radius:10px;margin:8px 0";
+        form.append(heading, titleInput, contentInput, help, currentPhoto, currentImg, imageInput, preview);
+      } else {
+        form.append(heading, titleInput, contentInput, help, imageInput, preview);
+      }
+
+      imageInput.addEventListener("change", () => {
+        const file = imageInput.files?.[0];
+        if (!file) {
+          preview.removeAttribute("src");
+          preview.style.display = "none";
+          return;
+        }
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      });
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+      const save = document.createElement("button");
+      save.className = "btn primary";
+      save.type = "submit";
+      save.textContent = "수정 저장";
+      const cancel = document.createElement("button");
+      cancel.className = "btn";
+      cancel.type = "button";
+      cancel.textContent = "취소";
+      cancel.addEventListener("click", () => form.remove());
+      const status = document.createElement("div");
+      status.className = "status";
+      status.setAttribute("role", "status");
+      actions.append(save, cancel);
+      form.append(actions, status);
+      article.append(form);
+
+      form.addEventListener("submit", async event => {
+        event.preventDefault();
+        if (currentUser?.id !== ADMIN_UID) {
+          status.textContent = "관리자 로그인 후 이용해 줘.";
+          return;
+        }
+
+        const newTitle = titleInput.value.trim();
+        const newContent = contentInput.value.trim();
+        const newFile = imageInput.files?.[0] || null;
+        if (!newTitle && !newContent && !newFile && !post.image_url) {
+          status.textContent = "내용이나 사진을 하나 이상 남겨 줘.";
+          return;
+        }
+
+        save.disabled = true;
+        cancel.disabled = true;
+        status.textContent = "수정 내용을 저장하고 있어…";
+
+        try {
+          let imageUrl = post.image_url || null;
+
+          // 새 사진을 골랐을 때만 업로드하고, 선택하지 않으면 기존 사진을 유지합니다.
+          if (newFile) {
+            if (!newFile.type.startsWith("image/")) throw new Error("이미지 파일만 업로드할 수 있어.");
+            if (newFile.size > 10 * 1024 * 1024) throw new Error("사진은 10MB 이하로 올려줘.");
+            const safeName = newFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+            const storagePath = `${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+            const { error: uploadError } = await supabaseClient.storage
+              .from(BUCKET)
+              .upload(storagePath, newFile, { upsert: false, contentType: newFile.type });
+            if (uploadError) throw uploadError;
+            const { data: publicData } = supabaseClient.storage.from(BUCKET).getPublicUrl(storagePath);
+            imageUrl = publicData.publicUrl;
+          }
+
+          const { error: updateError } = await supabaseClient
+            .from("posts")
+            .update({ title: newTitle || null, content: newContent || null, image_url: imageUrl })
+            .eq("id", post.id);
+
+          if (updateError) {
+            if (/row-level security|permission denied|not allowed/i.test(updateError.message || "")) {
+              throw new Error("수정 권한이 없어. Supabase의 posts 테이블에 관리자용 UPDATE 정책이 있는지 확인해 줘.");
+            }
+            throw updateError;
+          }
+
+          await loadPosts();
+        } catch (error) {
+          status.textContent = `수정하지 못했어: ${error.message || "설정을 확인해 줘."}`;
+          save.disabled = false;
+          cancel.disabled = false;
+        }
+      });
+    }
+
     async function deletePost(post) {
       if (currentUser?.id !== ADMIN_UID) return;
       if (!confirm("이 게시물을 삭제할까?")) return;
@@ -250,11 +388,15 @@
         if (currentUser?.id === ADMIN_UID) {
           const actions = document.createElement("div");
           actions.className = "post-actions";
+          const edit = document.createElement("button");
+          edit.className = "btn";
+          edit.textContent = "수정";
+          edit.addEventListener("click", () => editPost(post, article));
           const del = document.createElement("button");
           del.className = "btn";
           del.textContent = "삭제";
           del.addEventListener("click", () => deletePost(post));
-          actions.append(del);
+          actions.append(edit, del);
           article.append(actions);
         }
         container.append(article);
