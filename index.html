@@ -13,7 +13,13 @@
     button{cursor:pointer}
     .wrap{width:min(760px,calc(100% - 28px));margin:0 auto;padding:28px 0 60px}
     .hero{position:relative;overflow:hidden;text-align:center;padding:42px 20px 34px;border:1px solid #f7dce7;border-radius:28px;background:radial-gradient(circle at 15% 20%,#fff 0 7%,transparent 7.5%),linear-gradient(135deg,#ffe5ef,#fff8fb 55%,#fce4ee);box-shadow:0 10px 35px #d88eaa18}
-    .hero:before,.hero:after{content:"♡";position:absolute;color:#e9a3bf;font-size:30px;opacity:.7}
+    .hero:before,.hero:after{content:"♡";position:absolute;color:#e9a3bf;font-size:30px;opacity:.7;pointer-events:none}
+    .hero.has-banner{background-size:cover;background-position:center;background-repeat:no-repeat}
+    .hero.has-banner:before,.hero.has-banner:after{color:#fff;text-shadow:0 1px 8px #6b4555}
+    .hero.has-banner .eyebrow,.hero.has-banner h1,.hero.has-banner .sub,.hero.has-banner .intro{ text-shadow:0 1px 8px #fff,0 0 16px #fff }
+    .hero.has-banner .dday{background:#ffffffdf}
+    .banner-panel{margin-top:14px}
+    .banner-preview{display:none;width:100%;max-height:220px;object-fit:cover;border-radius:13px;margin-top:10px;border:1px solid var(--line)}
     .hero:before{left:24px;top:18px}.hero:after{right:25px;bottom:15px}
     .eyebrow{font-size:11px;letter-spacing:.28em;color:#c77d9c}
     h1{font-family:Georgia,serif;font-weight:500;font-size:clamp(36px,8vw,54px);letter-spacing:.02em;margin:10px 0 5px;color:#bd6f91}
@@ -52,7 +58,7 @@
 </head>
 <body>
   <main class="wrap">
-    <header class="hero">
+    <header class="hero" id="hero">
       <div class="eyebrow">엔진 자랑타래에 오신 걸 환영합니다!</div>
       <h1>轟 焦凍</h1>
       <div class="sub">♡ 쇼토천사님과 ♡</div>
@@ -83,6 +89,15 @@
       <img class="preview" id="imagePreview" alt="업로드할 사진 미리보기">
       <div class="actions"><button class="btn primary" id="publishBtn">게시하기</button><button class="btn" id="logoutBtn">로그아웃</button></div>
       <div class="status" id="composerStatus" role="status"></div>
+    </section>
+
+    <section class="panel hidden banner-panel" id="bannerPanel">
+      <h2>메인 배너 사진 바꾸기 ♡</h2>
+      <p class="login-note">사이트 맨 위 배경 사진을 변경할 수 있어. 사진을 선택한 뒤 저장하면 모든 방문자에게 적용돼.</p>
+      <input class="field" id="bannerImage" type="file" accept="image/*">
+      <img class="banner-preview" id="bannerPreview" alt="배너 사진 미리보기">
+      <div class="actions"><button class="btn primary" id="saveBannerBtn">배너 저장</button><button class="btn" id="resetBannerBtn" type="button">기본 배너로 되돌리기</button></div>
+      <div class="status" id="bannerStatus" role="status"></div>
     </section>
 
     <section class="posts" id="posts" aria-live="polite">
@@ -132,8 +147,76 @@
       $("loginToggle").textContent = isAdmin ? "관리자 로그인됨" : "관리자 로그인";
       $("loginToggle").disabled = isAdmin;
       $("composer").classList.toggle("hidden", !isAdmin);
+      $("bannerPanel").classList.toggle("hidden", !isAdmin);
       if (!isAdmin) $("loginPanel").classList.add("hidden");
     }
+
+    const HERO_DEFAULT_BACKGROUND = "radial-gradient(circle at 15% 20%,#fff 0 7%,transparent 7.5%),linear-gradient(135deg,#ffe5ef,#fff8fb 55%,#fce4ee)";
+
+    async function loadBanner() {
+      const { data, error } = await supabaseClient.from("site_settings").select("banner_url").eq("id", "main").maybeSingle();
+      if (error) { console.warn("배너 설정을 불러오지 못했어:", error.message); return; }
+      const hero = $("hero");
+      if (data?.banner_url) {
+        hero.style.backgroundImage = `linear-gradient(0deg,rgba(255,255,255,.24),rgba(255,255,255,.24)),url("${data.banner_url}")`;
+        hero.classList.add("has-banner");
+      } else {
+        hero.style.backgroundImage = HERO_DEFAULT_BACKGROUND;
+        hero.classList.remove("has-banner");
+      }
+    }
+
+    $("bannerImage").addEventListener("change", () => {
+      const file = $("bannerImage").files?.[0];
+      const preview = $("bannerPreview");
+      if (!file) { preview.removeAttribute("src"); preview.style.display = "none"; return; }
+      if (!file.type.startsWith("image/")) { $("bannerStatus").textContent = "이미지 파일만 선택해 줘."; $("bannerImage").value = ""; return; }
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = "block";
+      $("bannerStatus").textContent = "미리보기야. 저장 버튼을 눌러 적용해 줘.";
+    });
+
+    $("saveBannerBtn").addEventListener("click", async () => {
+      if (currentUser?.id !== ADMIN_UID) { $("bannerStatus").textContent = "관리자 로그인 후 이용해 줘."; return; }
+      const file = $("bannerImage").files?.[0];
+      if (!file) { $("bannerStatus").textContent = "먼저 배너로 사용할 사진을 선택해 줘."; return; }
+      if (!file.type.startsWith("image/")) { $("bannerStatus").textContent = "이미지 파일만 업로드할 수 있어."; return; }
+      if (file.size > 10 * 1024 * 1024) { $("bannerStatus").textContent = "사진은 10MB 이하로 올려줘."; return; }
+      const button = $("saveBannerBtn");
+      button.disabled = true;
+      $("bannerStatus").textContent = "배너 사진을 저장하고 있어…";
+      try {
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        const path = `banner/${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+        const { error: uploadError } = await supabaseClient.storage.from(BUCKET).upload(path, file, { upsert: false, contentType: file.type });
+        if (uploadError) throw uploadError;
+        const { data: publicData } = supabaseClient.storage.from(BUCKET).getPublicUrl(path);
+        const { error: saveError } = await supabaseClient.from("site_settings").upsert({ id: "main", banner_url: publicData.publicUrl }, { onConflict: "id" });
+        if (saveError) throw saveError;
+        await loadBanner();
+        $("bannerImage").value = "";
+        $("bannerPreview").removeAttribute("src");
+        $("bannerPreview").style.display = "none";
+        $("bannerStatus").textContent = "새 배너 사진을 적용했어! ♡";
+      } catch (error) {
+        $("bannerStatus").textContent = `배너를 저장하지 못했어: ${error.message || "Supabase 설정을 확인해 줘."}`;
+      } finally { button.disabled = false; }
+    });
+
+    $("resetBannerBtn").addEventListener("click", async () => {
+      if (currentUser?.id !== ADMIN_UID) { $("bannerStatus").textContent = "관리자 로그인 후 이용해 줘."; return; }
+      if (!confirm("배너 사진을 지우고 기본 디자인으로 되돌릴까?")) return;
+      const button = $("resetBannerBtn");
+      button.disabled = true;
+      try {
+        const { error } = await supabaseClient.from("site_settings").upsert({ id: "main", banner_url: null }, { onConflict: "id" });
+        if (error) throw error;
+        await loadBanner();
+        $("bannerStatus").textContent = "기본 배너로 되돌렸어. ♡";
+      } catch (error) {
+        $("bannerStatus").textContent = `변경하지 못했어: ${error.message || "설정을 확인해 줘."}`;
+      } finally { button.disabled = false; }
+    });
 
     $("loginBtn").addEventListener("click", async () => {
       $("loginStatus").textContent = "로그인 중…";
@@ -410,7 +493,7 @@
 
     (async function init() {
       await updateAuthUI();
-      await loadPosts();
+      await Promise.all([loadBanner(), loadPosts()]);
     })();
   </script>
 </body>
