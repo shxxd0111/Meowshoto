@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f8dce8">
+<title>Meowshoto ♡ Dear, Shoto</title>
+<style>
+:root{--pink:#f7dce8;--deep:#dc91b1;--soft:#fff1f6;--ink:#75465c;--muted:#b17d96;--white:#fffafd;--line:#f2d5e1}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--pink);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer}.page{width:min(720px,100%);margin:auto;padding:22px 16px 56px}
+.banner{min-height:190px;border:2px solid #ffffffbf;border-radius:25px;overflow:hidden;position:relative;display:grid;place-items:center;text-align:center;padding:26px;background:linear-gradient(135deg,#f4bcd2,#fbe3ec 58%,#f6c9dc);background-size:cover;background-position:center;box-shadow:0 8px 24px #ad68891a}
+.banner:before,.banner:after{content:"♡";position:absolute;color:#ffffffb8;font-size:44px}.banner:before{left:22px;top:14px}.banner:after{right:25px;bottom:12px}
+.banner-content{position:relative;z-index:1;text-shadow:0 1px 5px #ffffff8c}.eyebrow{margin:0 0 8px;letter-spacing:.22em;font-size:11px;font-weight:700;color:#995d79}
+h1{margin:0;font-family:Georgia,serif;font-size:clamp(36px,8vw,54px);color:#854c68;font-weight:600}.subtitle{margin:9px 0 0;font-size:13px;color:#925d77}
+.banner-tools{position:absolute;right:14px;top:14px;z-index:2}.small-button,.action-button{border:1px solid #efcada;background:#fffafde8;color:#925d77;border-radius:999px;padding:8px 13px;font-size:12px}
+.intro{text-align:center;padding:24px 8px 18px}.intro h2{font-size:18px;margin:0 0 7px}.intro p{color:var(--muted);font-size:12px;margin:0}
+.dday{margin:0 auto 20px;width:fit-content;background:#fffafdd1;border:1px solid white;border-radius:18px;padding:11px 22px;text-align:center}.dday-label{display:block;color:var(--muted);font-size:10px;letter-spacing:.18em;margin-bottom:4px}.dday strong{font-family:Georgia,serif;font-size:24px;color:#c06f94}
+.composer,.post{background:var(--white);border:1px solid #ffffffe6;border-radius:20px;padding:18px;box-shadow:0 6px 20px #ad688912}.composer{margin-bottom:17px}.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.section-title h3{margin:0;font-size:14px}.section-title span{color:var(--muted);font-size:11px}
+textarea{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line);border-radius:13px;background:#fff8fb;padding:12px;outline:none;color:var(--ink)}textarea:focus{border-color:var(--deep)}
+.composer-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:11px;flex-wrap:wrap}input[type=file]{max-width:100%;color:var(--muted);font-size:11px}
+.primary{border:0;border-radius:999px;padding:10px 18px;color:white;font-weight:700;background:var(--deep);box-shadow:0 4px 10px #dc91b133}
+.feed-heading{display:flex;align-items:center;justify-content:space-between;margin:25px 4px 12px}.feed-heading h3{margin:0;font-size:15px}.feed-heading span{font-size:11px;color:var(--muted)}
+.post{margin-bottom:13px}.post-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}.post-date{color:var(--muted);font-size:11px}.post-actions button{border:0;background:transparent;color:#bd829d;font-size:11px;padding:3px 5px}
+.post-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;font-size:14px}.post-image{display:block;width:100%;max-height:560px;object-fit:contain;margin-top:12px;border-radius:13px;background:#fff1f6}
+.post-heart{color:#d78cab;margin-top:12px;font-size:12px}.empty{text-align:center;padding:32px 12px;color:var(--muted);font-size:13px;background:#fffafd a6;border-radius:18px;border:1px dashed #e9b9ce}
+footer{text-align:center;padding:30px 0 0;color:#b17d96;font:12px Georgia,serif}.notice{margin:14px 2px 0;color:#a7778e;font-size:10px;line-height:1.6}
+@media(max-width:480px){.page{padding:12px 11px 40px}.banner{min-height:165px;border-radius:20px}.composer,.post{padding:15px;border-radius:17px}.composer-bottom{align-items:flex-start}.primary{margin-left:auto}}
+</style>
+</head>
+<body>
+<main class="page">
+<header class="banner" id="banner">
+  <div class="banner-content"><p class="eyebrow">A LITTLE ARCHIVE OF US</p><h1>Dear, Shoto</h1><p class="subtitle">our days, kept with love ♡</p></div>
+  <div class="banner-tools"><label class="small-button" for="bannerInput">배너 바꾸기</label><input id="bannerInput" type="file" accept="image/*" hidden></div>
+</header>
+<section class="intro"><h2>Our little archive ♡</h2><p>쇼토천사님과 함께한 소중한 순간들을 기록해요.</p></section>
+<section class="dday"><span class="dday-label">OUR SPECIAL DAY</span><strong id="ddayValue">D+0</strong><div style="font-size:10px;color:#b17d96;margin-top:3px">2026.10.04</div></section>
+<section class="composer">
+  <div class="section-title"><h3>새로운 기록 남기기 ♡</h3><span>관리자용 미리보기</span></div>
+  <textarea id="postText" placeholder="오늘의 대화나 남기고 싶은 이야기를 적어줘."></textarea>
+  <div class="composer-bottom"><input id="postImage" type="file" accept="image/*"><button class="primary" id="publishButton">기록 올리기 ♡</button></div>
+  <p class="notice">현재 초안은 이 브라우저에서만 보이는 미리보기입니다. 실제 공개 사이트에서 여러 기기와 방문자에게 게시물을 공유하려면 이미지 저장소와 데이터베이스 연결이 추가로 필요합니다.</p>
+</section>
+<div class="feed-heading"><h3>♡ 기록 모음</h3><span id="postCount">0 posts</span></div>
+<section id="feed" aria-live="polite"><div class="empty">아직 기록이 없어요.<br>첫 번째 추억을 남겨보세요 ♡</div></section>
+<footer>made with love, for shoto ♡</footer>
+</main>
+<script>
+const feed=document.getElementById('feed'),textInput=document.getElementById('postText'),imageInput=document.getElementById('postImage'),bannerInput=document.getElementById('bannerInput'),posts=[];
+function updateDday(){const start=new Date(2026,9,4),today=new Date();today.setHours(0,0,0,0);const days=Math.floor((today-start)/86400000);document.getElementById('ddayValue').textContent=days>=0?'D+'+days:'D'+days}
+function readImage(file){return new Promise((resolve,reject)=>{if(!file)return resolve('');const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file)})}
+function renderPosts(){feed.innerHTML='';document.getElementById('postCount').textContent=posts.length+' posts';if(!posts.length){const empty=document.createElement('div');empty.className='empty';empty.innerHTML='아직 기록이 없어요.<br>첫 번째 추억을 남겨보세요 ♡';feed.appendChild(empty);return}posts.forEach((post,index)=>{const card=document.createElement('article');card.className='post';const meta=document.createElement('div');meta.className='post-meta';const date=document.createElement('span');date.className='post-date';date.textContent=post.date;const actions=document.createElement('div');actions.className='post-actions';const remove=document.createElement('button');remove.textContent='삭제';remove.addEventListener('click',()=>{posts.splice(index,1);renderPosts()});actions.appendChild(remove);meta.append(date,actions);card.appendChild(meta);if(post.text){const body=document.createElement('div');body.className='post-text';body.textContent=post.text;card.appendChild(body)}if(post.image){const img=document.createElement('img');img.className='post-image';img.src=post.image;img.alt='게시물 첨부 이미지';card.appendChild(img)}const heart=document.createElement('div');heart.className='post-heart';heart.textContent='♡ with love';card.appendChild(heart);feed.appendChild(card)})}
+document.getElementById('publishButton').addEventListener('click',async()=>{const text=textInput.value.trim(),file=imageInput.files[0];if(!text&&!file){alert('글이나 사진을 하나 이상 추가해줘!');return}const image=await readImage(file);posts.unshift({text,image,date:new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date())});textInput.value='';imageInput.value='';renderPosts()});
+bannerInput.addEventListener('change',async()=>{const file=bannerInput.files[0];if(file){const image=await readImage(file);document.getElementById('banner').style.backgroundImage='url("'+image+'")'}});
+updateDday();renderPosts();
+</script>
+</body>
+</html>
